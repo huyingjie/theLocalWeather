@@ -1,0 +1,32 @@
+body {
+  background-image: url("../img/rain.jpeg") !important;
+  background-size: cover;
+}
+
+.container {
+  padding-top: 10%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.title{
+  font-size: 30px;
+  color: rgb(198, 167, 122);
+}
+.subtitle {
+  font-size: 20px;
+  color: rgb(198, 167, 122);
+}
+.temperature{
+  color: white;
+  font-size: 22px;
+  margin-bottom: 20px;
+  margin-top: 40px;
+}
+.weather{
+  color: rgb(147,111,97);
+  background-color: white;
+  opacity: 0.7;
+  margin: 3px;
+  border-radius: 2px;
+  box-shadow: 0 0 40px red
+}

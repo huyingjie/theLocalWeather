@@ -1,6 +1,9 @@
 body {
-  background-image: url("../img/rain.jpg") !important;
+  background-image: url("../img/rain.jpg");
   background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: rgb(198, 167, 122);
 }
 
 .container {
@@ -10,11 +13,9 @@ body {
 }
 .title{
   font-size: 30px;
-  color: rgb(198, 167, 122);
 }
 .subtitle {
   font-size: 20px;
-  color: rgb(198, 167, 122);
 }
 .temperature{
   color: white;
@@ -29,4 +30,10 @@ body {
   margin: 3px;
   border-radius: 2px;
   box-shadow: 0 0 40px red
+}
+
+#footer {
+  position: absolute;
+  bottom: 20px;
+  font-size: 14px;
 }

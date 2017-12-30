@@ -17,14 +17,42 @@
   <script src="scripts/main.js"></script>
   <script>
   $(document).ready(function(){
-    var APIData;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
-        APIData = " https://fcc-weather-api.glitch.me/api/current?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude;
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var weatherAPI = "https://fcc-weather-api.glitch.me/api/current?lat=" + latitude + "&lon=" + longitude;
+        var googleAPI = "https://maps.googleapis.com/maps/api/geocode/json?&latlng=" + latitude + "," + longitude;
+        //console.log("latitude: "+position.coords.latitude);
+        console.log(weatherAPI);
+        console.log(googleAPI);
+        $.getJSON(weatherAPI, function(json){
+          var windSpeed = json["wind"]["speed"];
+          var windDegree = json["wind"]["deg"];
+          var windDirection;
+          if (windDegree >0 && windDegree <=90) windDirection = "NE";
+          else if (windDegree > 90 && windDegree <= 180) windDirection = "SE";
+          else if (windDegree > 180 && windDegree <= 270) windDirection = "SW";
+          else windDirection = "NW";
+
+          var temperature = json["main"]["temp"]
+          var c = Math.round(temperature);
+          var f = Math.round(temperature*9/5+32);
+
+          $("#weatherIcon").html("<img src=" + json["weather"][0]["icon"] + ">");
+          $("#temperature").html(f);
+          $("#weatherDescription").html(json["weather"][0]["description"])
+          $("#wind").html(windDirection + " "+ windSpeed + " knots");
+
+          //console.log(json["weather"][0]["main"]);
+          //console.log(json["wind"]["deg"]);
+
+        })
+
+        $.getJSON()
       });
     }
-    console.log(APIData);
-  };)
+  });
 </script>
 
 </head>
@@ -37,13 +65,13 @@
     <div class="subtitle">Local Weather App - New York City</div>
 
     <div class="temperature">
-      <i class="fas fa-cloud" style="padding-right: 8px"></i>62 F
+      <span id="weatherIcon" style="color:white"><i class="fas fa-cloud" style="padding-right: 8px"></i></span><span id="temperature"></span> °F
     </div>
 
     <div class="row justify-content-center">
       <div class="weather col-md-auto">Alameda, California</div>
-      <div class="weather col-md-auto">sky is clear</div>
-      <div class="weather col-md-auto">SW 7.67 knots</div>
+      <div class="weather col-md-auto" id="weatherDescription">sky is clear</div>
+      <div class="weather col-md-auto" id="wind"></div>
     </div>
 
   </div>

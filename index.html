@@ -39,17 +39,40 @@
           var c = Math.round(temperature);
           var f = Math.round(temperature*9/5+32);
 
-          $("#weatherIcon").html("<img src=" + json["weather"][0]["icon"] + ">");
+          //$("#weatherIcon").html("<img src=" + json["weather"][0]["icon"] + ">");
           $("#temperature").html(f);
-          $("#weatherDescription").html(json["weather"][0]["description"])
+          $("#weatherDescription").html(json["weather"][0]["description"].toUpperCase());
           $("#wind").html(windDirection + " "+ windSpeed + " knots");
 
           //console.log(json["weather"][0]["main"]);
           //console.log(json["wind"]["deg"]);
 
+          switch(json["weather"][0]["main"].toLowerCase()){
+            case "mist": $("body").css("background-image", url("img/mist.jpg")); break;
+            case "snow": $("body").css("background-image", url("img/snow.jpg")); break;
+
+          };
+
         })
 
-        $.getJSON()
+        $.getJSON(googleAPI, function(json){
+          //console.log(json.results[0]["address_components"]);
+          var addressInfo = json.results[0]["address_components"];
+          //var city;
+          var area;
+          var country;
+          //var postalCode;
+          for( var i = 0; i < addressInfo.length; i++){
+            switch(addressInfo[i]["types"][0]){
+              //case "locality": city = addressInfo[i]["long_name"]; break;
+              case "administrative_area_level_1": area = addressInfo[i]["long_name"]; break;
+              case "country": country = addressInfo[i]["short_name"]; break;
+              //case "postal_code": postalCode = addressInfo[i]["long_name"]; break;
+            }
+          }
+          //console.log("city: "+city+" area: "+area+" country: "+country+" postal code: "+postalCode);
+          $("#location").html(area + ", " + country);
+        })
       });
     }
   });
@@ -62,7 +85,7 @@
   <div class="container text-center">
     <div class="title"> Free Code Camp Zipline</div>
 
-    <div class="subtitle">Local Weather App - New York City</div>
+    <div class="subtitle">Local Weather App - <span id="location"></span></div>
 
     <div class="temperature">
       <span id="weatherIcon" style="color:white"><i class="fas fa-cloud" style="padding-right: 8px"></i></span><span id="temperature"></span> °F

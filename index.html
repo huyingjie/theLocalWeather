@@ -15,68 +15,6 @@
 
   <link rel="stylesheet" href="css/main.css">
   <script src="scripts/main.js"></script>
-  <script>
-  $(document).ready(function(){
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        var weatherAPI = "https://fcc-weather-api.glitch.me/api/current?lat=" + latitude + "&lon=" + longitude;
-        var googleAPI = "https://maps.googleapis.com/maps/api/geocode/json?&latlng=" + latitude + "," + longitude;
-        //console.log("latitude: "+position.coords.latitude);
-        console.log(weatherAPI);
-        console.log(googleAPI);
-        $.getJSON(weatherAPI, function(json){
-          var windSpeed = json["wind"]["speed"];
-          var windDegree = json["wind"]["deg"];
-          var windDirection;
-          if (windDegree >0 && windDegree <=90) windDirection = "NE";
-          else if (windDegree > 90 && windDegree <= 180) windDirection = "SE";
-          else if (windDegree > 180 && windDegree <= 270) windDirection = "SW";
-          else windDirection = "NW";
-
-          var temperature = json["main"]["temp"]
-          var c = Math.round(temperature);
-          var f = Math.round(temperature*9/5+32);
-
-          //$("#weatherIcon").html("<img src=" + json["weather"][0]["icon"] + ">");
-          $("#temperature-f").html(f);
-          $("#weatherDescription").html(json["weather"][0]["description"].toUpperCase());
-          $("#wind").html(windDirection + " "+ windSpeed + " knots");
-
-          //console.log(json["weather"][0]["main"]);
-          //console.log(json["wind"]["deg"]);
-
-          switch(json["weather"][0]["main"].toLowerCase()){
-            case "mist": $("body").css("background-image", 'url("img/mist.jpg")'); break;
-            case "snow": $("body").css("background-image", 'url("img/snow.jpg")'); break;
-            default: $("body").css("background-image", 'url("img/sunny.jpg")');
-          };
-
-        })
-
-        $.getJSON(googleAPI, function(json){
-          //console.log(json.results[0]["address_components"]);
-          var addressInfo = json.results[0]["address_components"];
-          var city;
-          var area;
-          var country;
-          //var postalCode;
-          for( var i = 0; i < addressInfo.length; i++){
-            switch(addressInfo[i]["types"][0]){
-              case "locality": city = addressInfo[i]["long_name"]; break;
-              case "administrative_area_level_1": area = addressInfo[i]["long_name"]; break;
-              case "country": country = addressInfo[i]["short_name"]; break;
-              //case "postal_code": postalCode = addressInfo[i]["long_name"]; break;
-            }
-          }
-          //console.log("city: "+city+" area: "+area+" country: "+country+" postal code: "+postalCode);
-          $("#location").html(city + ", " + area + ", " + country);
-        })
-      });
-    }
-  });
-</script>
 
 </head>
 
@@ -88,7 +26,10 @@
     <div class="subtitle">Local Weather App</div>
 
     <div class="temperature">
-      <span id="weatherIcon" style="color:white"><i class="fas fa-cloud" style="padding-right: 8px"></i></span><span id="temperature-f"></span>
+      <span id="weatherIcon" style="color:white"><i class="fas fa-cloud" style="padding-right: 8px"></i></span>
+      <span id="temperature-number"></span>
+      <span id="temperature-f">°F</span>
+      <span id="temperature-c"><a href='#'>°C</a></span>
     </div>
 
     <div class="row justify-content-center">

@@ -5,6 +5,7 @@ $(document).ready(function(){
       var longitude = position.coords.longitude;
       var weatherAPI = "https://fcc-weather-api.glitch.me/api/current?lat=" + latitude + "&lon=" + longitude;
       var googleAPI = "https://maps.googleapis.com/maps/api/geocode/json?&latlng=" + latitude + "," + longitude;
+      var freegeopip = "http://freegeoip.net/json/"
       //console.log("latitude: "+position.coords.latitude);
       console.log(weatherAPI);
       console.log(googleAPI);
@@ -46,13 +47,10 @@ $(document).ready(function(){
 
       });
 
-      $.getJSON(googleAPI, function(json){
-        //console.log(json.results[0]["address_components"]);
-        var addressInfo = json.results[0]["address_components"];
-        var city;
-        var area;
-        var country;
-        //var postalCode;
+      $.getJSON(freegeoip, function(json){
+        var city = json.city;
+        var area = json.region_name;
+        var country = json.country_code;
         for( var i = 0; i < addressInfo.length; i++){
           switch(addressInfo[i]["types"][0]){
             case "locality": city = addressInfo[i]["long_name"]; break;
@@ -63,7 +61,26 @@ $(document).ready(function(){
         }
         //console.log("city: "+city+" area: "+area+" country: "+country+" postal code: "+postalCode);
         $("#location").html(city + ", " + area + ", " + country);
-      });
+      })
+
+      // $.getJSON(googleAPI, function(json){
+      //   //console.log(json.results[0]["address_components"]);
+      //   var addressInfo = json.results[0]["address_components"];
+      //   var city;
+      //   var area;
+      //   var country;
+      //   //var postalCode;
+      //   for( var i = 0; i < addressInfo.length; i++){
+      //     switch(addressInfo[i]["types"][0]){
+      //       case "locality": city = addressInfo[i]["long_name"]; break;
+      //       case "administrative_area_level_1": area = addressInfo[i]["long_name"]; break;
+      //       case "country": country = addressInfo[i]["short_name"]; break;
+      //       //case "postal_code": postalCode = addressInfo[i]["long_name"]; break;
+      //     }
+      //   }
+      //   //console.log("city: "+city+" area: "+area+" country: "+country+" postal code: "+postalCode);
+      //   $("#location").html(city + ", " + area + ", " + country);
+      // });
     });
   }
 });

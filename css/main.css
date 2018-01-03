@@ -36,4 +36,12 @@ body {
   position: absolute;
   bottom: 20px;
   font-size: 14px;
+  left: 0;
+  right:0;
+}
+
+.unit {
+  font-size: 14px;
+  bottom: 10px;
+  position: relative;
 }

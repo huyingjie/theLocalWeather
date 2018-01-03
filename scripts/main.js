@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  var freegeoip = "http://freegeoip.net/json/";
+  var freegeoip = "https://freegeoip.net/json/";
   //console.log(freegeoip);
   $.getJSON(freegeoip, function(json){
     var city = json.city;
